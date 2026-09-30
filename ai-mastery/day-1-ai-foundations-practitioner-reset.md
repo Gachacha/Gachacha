@@ -5,8 +5,8 @@
 - Lesson: 1/180
 - Target lesson time: 120 minutes
 - Current level: Beginner — Foundation Reset
-- Capability stage: Thinking → Understanding
-- AI capability pyramid: Foundation → Understanding
+- Capability stage: Thinking → Building → Integrating
+- AI capability pyramid: Foundation → Understanding → Building → Integrating
 
 ## Current curriculum
 
@@ -48,6 +48,110 @@ Client/User Input
 → External Tool
 → Verification
 → Result
+
+## Day 1 practical build — PDI client qualification system
+
+### Task
+Extract customer information → verify it against approved rules → qualify the client.
+
+### Risks identified
+- Do not invent missing information.
+- Do not book without following the approved pathway.
+
+### Model
+Use an AI language model to understand the client's language, need, objective and clarify the enquiry.
+
+### Data
+- Full names
+- Licence status
+- Whether the client has a car for practice
+- Location
+- Need
+- Objective
+
+Important control: client-reported information must be distinguished from verified information.
+
+### Tools
+- WhatsApp
+- Make
+- Google Drive
+- Calendar
+
+Make is the automation/orchestration layer, not the AI model.
+
+### Evaluation
+Test whether the system:
+- extracts information correctly,
+- distinguishes reported from verified information,
+- qualifies against approved rules,
+- follows the approved pathway after verified steps.
+
+### Monitoring
+Monitor for:
+- incorrect workflow transitions,
+- unsupported or invented claims,
+- tool/automation failures,
+- repeated human-review cases,
+- duplicate or unexpected actions.
+
+### Human responsibility
+The human remains responsible for:
+- defining and approving business rules,
+- delivering the services,
+- handling exceptions such as double bookings,
+- decisions outside the AI's approved authority.
+
+### Documentation
+Document:
+- system purpose,
+- approved business rules,
+- workflow states,
+- guardrails,
+- data fields.
+
+## Deployment design
+
+Client enquiry
+→ Extract information
+→ Verify information
+→ Apply approved business rules
+→ Qualify
+→ Customer selects/confirm an approved package
+→ Initiate booking request
+→ BOOKING_PENDING
+→ External booking result
+→ Verify/reconcile result
+→ BOOKED if confirmed
+→ BOOKING_STATUS_UNKNOWN if outcome cannot be determined
+→ Recovery/escalation according to approved rules
+
+Important distinction:
+
+**Booking request ≠ confirmed booking.**
+
+A timeout does not prove success or failure. Use an UNKNOWN state and reconcile using the relevant process/booking ID.
+
+## Day 1 recall
+
+- Recall score: 10/10
+- Result: Passed
+
+## Day 1 test
+
+- Test score: 8/10
+- Result: Passed with identified gaps
+
+### Test gaps identified
+1. Timeout handling: initially selected BOOKING_PENDING; correct controlled state when the result cannot be determined is BOOKING_STATUS_UNKNOWN.
+2. State vs confirmed result: reinforced that an attempted action is not the same as a confirmed workflow state.
+
+## Day 1 build and deployment status
+
+- Build: Passed
+- Conceptual deployment: Passed
+- Documentation: Updated during lesson
+- Demonstration: Pending
+- Close: Pending
 
 ## Mastery standard
 
